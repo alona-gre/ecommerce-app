@@ -24,7 +24,6 @@ class CheckoutScreen extends StatefulWidget {
 
 class _CheckoutScreenState extends State<CheckoutScreen> {
   final _controller = PageController();
-
   var _subRoute = CheckoutSubRoute.register;
 
   void _onSignedIn() {

@@ -16,7 +16,10 @@ import 'package:ecommerce_app/src/models/product.dart';
 
 /// Shows the product page for a given product ID.
 class ProductScreen extends StatelessWidget {
-  const ProductScreen({Key? key, required this.productId}) : super(key: key);
+  const ProductScreen({
+    Key? key,
+    required this.productId,
+  }) : super(key: key);
   final String productId;
 
   @override
