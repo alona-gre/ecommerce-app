@@ -17,7 +17,7 @@ class EmailPasswordSignInController
     state = state.copyWith(value: const AsyncValue.loading());
     final value = await AsyncValue.guard(
       () => _authenticate(email, password),
-    );
+    ); 
     state = state.copyWith(value: value);
     return value.hasError == false;
   }

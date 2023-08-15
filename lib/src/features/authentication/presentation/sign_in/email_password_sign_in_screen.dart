@@ -87,6 +87,7 @@ class _EmailPasswordSignInContentsState
           emailPasswordSignInControllerProvider(widget.formType).notifier);
       final success = await controller.submit(email, password);
       if (success) {
+        // pops the page
         widget.onSignedIn?.call();
       }
     }
