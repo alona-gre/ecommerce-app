@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:ecommerce_app/src/constants/test_products.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../domain/product.dart';
