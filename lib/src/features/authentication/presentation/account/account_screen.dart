@@ -47,8 +47,9 @@ class AccountScreen extends ConsumerWidget {
                       final success = await ref
                           .read(accountScreenControllerProvider.notifier)
                           .signOut();
+
                       if (success) {
-                        goRouter.pop();
+                        Navigator.of(context).pop();
                       }
                     }
                   },
