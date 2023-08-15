@@ -1,31 +1,34 @@
+import 'dart:io';
+
 import 'package:ecommerce_app/src/localization/string_hardcoded.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:ecommerce_app/src/platform/platform_is.dart';
+import 'package:go_router/go_router.dart';
 
 /// Generic function to show a platform-aware Material or Cupertino dialog
 Future<bool?> showAlertDialog({
   required BuildContext context,
   required String title,
-  required String content,
+  String? content,
   String? cancelActionText,
-  required String defaultActionText,
+  String defaultActionText = 'OK',
 }) async {
-  if (!PlatformIs.iOS) {
+  if (kIsWeb || !Platform.isIOS) {
     return showDialog(
       context: context,
       builder: (context) => AlertDialog(
         title: Text(title),
-        content: Text(content),
+        content: content != null ? Text(content) : null,
         actions: <Widget>[
           if (cancelActionText != null)
             TextButton(
               child: Text(cancelActionText),
-              onPressed: () => Navigator.of(context).pop(false),
+              onPressed: () => context.pop(false),
             ),
           TextButton(
             child: Text(defaultActionText),
-            onPressed: () => Navigator.of(context).pop(true),
+            onPressed: () => context.pop(true),
           ),
         ],
       ),
@@ -35,16 +38,16 @@ Future<bool?> showAlertDialog({
     context: context,
     builder: (context) => CupertinoAlertDialog(
       title: Text(title),
-      content: Text(content),
+      content: content != null ? Text(content) : null,
       actions: <Widget>[
         if (cancelActionText != null)
           CupertinoDialogAction(
             child: Text(cancelActionText),
-            onPressed: () => Navigator.of(context).pop(false),
+            onPressed: () => context.pop(false),
           ),
         CupertinoDialogAction(
           child: Text(defaultActionText),
-          onPressed: () => Navigator.of(context).pop(true),
+          onPressed: () => context.pop(true),
         ),
       ],
     ),
@@ -62,4 +65,10 @@ Future<void> showExceptionAlertDialog({
       title: title,
       content: exception.toString(),
       defaultActionText: 'OK'.hardcoded,
+    );
+
+Future<void> showNotImplementedAlertDialog({required BuildContext context}) =>
+    showAlertDialog(
+      context: context,
+      title: 'Not implemented'.hardcoded,
     );
