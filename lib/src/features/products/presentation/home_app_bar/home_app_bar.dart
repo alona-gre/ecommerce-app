@@ -3,7 +3,6 @@ import 'package:ecommerce_app/src/features/authentication/data/fake_auth_reposit
 import 'package:ecommerce_app/src/features/products/presentation/home_app_bar/more_menu_button.dart';
 import 'package:ecommerce_app/src/features/products/presentation/home_app_bar/shopping_cart_icon.dart';
 import 'package:ecommerce_app/src/localization/string_hardcoded.dart';
-import 'package:ecommerce_app/src/features/authentication/domain/app_user.dart';
 import 'package:ecommerce_app/src/routing/app_router.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_app/src/common_widgets/action_text_button.dart';
@@ -17,12 +16,11 @@ import 'package:go_router/go_router.dart';
 /// - Orders button
 /// - Account or Sign-in button
 class HomeAppBar extends ConsumerWidget implements PreferredSizeWidget {
-  const HomeAppBar({Key? key}) : super(key: key);
+  const HomeAppBar({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(authStateChangesProvider).value;
-
     // * This widget is responsive.
     // * On large screen sizes, it shows all the actions in the app bar.
     // * On small screen sizes, it shows only the shopping cart icon and a
@@ -35,7 +33,7 @@ class HomeAppBar extends ConsumerWidget implements PreferredSizeWidget {
       return AppBar(
         title: Text('My Shop'.hardcoded),
         actions: [
-          ShoppingCartIcon(),
+          const ShoppingCartIcon(),
           MoreMenuButton(user: user),
         ],
       );

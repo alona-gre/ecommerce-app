@@ -2,26 +2,20 @@ import 'package:ecommerce_app/src/features/authentication/data/fake_auth_reposit
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class AccountScreenController extends StateNotifier<AsyncValue<void>> {
+  AccountScreenController({required this.authRepository})
+      : super(const AsyncData(null));
   final FakeAuthRepository authRepository;
 
-  AccountScreenController({required this.authRepository})
-      : super(const AsyncData<void>(null));
-
-  Future<bool> signOut() async {
-    // set state to loading
-    // sign out (using auth repository)
-    // if success, set state to data
-    // if error, set state to error
-
+  Future<void> signOut() async {
     state = const AsyncLoading();
     state = await AsyncValue.guard(() => authRepository.signOut());
-    return state.hasError == false;
   }
 }
 
 final accountScreenControllerProvider = StateNotifierProvider.autoDispose<
     AccountScreenController, AsyncValue<void>>((ref) {
   final authRepository = ref.watch(authRepositoryProvider);
-
-  return AccountScreenController(authRepository: authRepository);
+  return AccountScreenController(
+    authRepository: authRepository,
+  );
 });

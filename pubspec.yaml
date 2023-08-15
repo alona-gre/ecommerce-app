@@ -12,12 +12,12 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_lints: 1.0.4
+  flutter_launcher_icons: 0.13.1
   flutter_localizations:
     sdk: flutter
   intl: 0.18.0 # Used for date and currency formatting
-  flutter_layout_grid: 1.0.3 # Used for content-sized items in the products grid layout
-  flutter_rating_bar: 4.0.0 # Used for the "leave a rating" feature
+  flutter_layout_grid: 2.0.3 # Used for content-sized items in the products grid layout
+  flutter_rating_bar: 4.0.1 # Used for the "leave a rating" feature
   go_router: 7.0.0
   flutter_riverpod: ^2.3.6
   shimmer: ^3.0.0
@@ -26,6 +26,9 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  integration_test:
+    sdk: flutter    
+  flutter_lints: 2.0.1
   mocktail: ^1.0.0
 
 flutter:
@@ -34,7 +37,12 @@ flutter:
   # Enable generation of localized Strings from arb files.
   generate: true
 
+  fonts:
+    # Used for Golden Image tests
+    - family: Roboto
+      fonts:
+        - asset: assets/fonts/Roboto-Regular.ttf
+
   assets:
-    # Add assets from the images directory to the application.
-    - assets/images/
+    # Add all product images
     - assets/products/

@@ -1,5 +1,4 @@
 import 'package:ecommerce_app/src/common_widgets/async_value_widget.dart';
-import 'package:ecommerce_app/src/constants/test_products.dart';
 import 'package:ecommerce_app/src/features/cart/presentation/add_to_cart/add_to_cart_widget.dart';
 import 'package:ecommerce_app/src/features/products/data/fake_products_repository.dart';
 import 'package:ecommerce_app/src/features/products/presentation/home_app_bar/home_app_bar.dart';
@@ -17,11 +16,9 @@ import 'package:ecommerce_app/src/constants/app_sizes.dart';
 import 'package:ecommerce_app/src/features/products/domain/product.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../common_widgets/error_message_widget.dart';
-
 /// Shows the product page for a given product ID.
 class ProductScreen extends StatelessWidget {
-  const ProductScreen({Key? key, required this.productId}) : super(key: key);
+  const ProductScreen({super.key, required this.productId});
   final String productId;
 
   @override
@@ -57,7 +54,7 @@ class ProductScreen extends StatelessWidget {
 /// - leave a review
 /// - add to cart
 class ProductDetails extends StatelessWidget {
-  const ProductDetails({Key? key, required this.product}) : super(key: key);
+  const ProductDetails({super.key, required this.product});
   final Product product;
 
   @override

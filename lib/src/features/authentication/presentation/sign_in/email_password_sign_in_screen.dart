@@ -10,14 +10,12 @@ import 'package:ecommerce_app/src/common_widgets/primary_button.dart';
 import 'package:ecommerce_app/src/common_widgets/responsive_scrollable_card.dart';
 import 'package:ecommerce_app/src/constants/app_sizes.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 
 /// Email & password sign in screen.
 /// Wraps the [EmailPasswordSignInContents] widget below with a [Scaffold] and
 /// [AppBar] with a title.
 class EmailPasswordSignInScreen extends StatelessWidget {
-  const EmailPasswordSignInScreen({Key? key, required this.formType})
-      : super(key: key);
+  const EmailPasswordSignInScreen({super.key, required this.formType});
   final EmailPasswordSignInFormType formType;
 
   // * Keys for testing using find.byKey()
@@ -30,7 +28,6 @@ class EmailPasswordSignInScreen extends StatelessWidget {
       appBar: AppBar(title: Text('Sign In'.hardcoded)),
       body: EmailPasswordSignInContents(
         formType: formType,
-        onSignedIn: () => context.pop(),
       ),
     );
   }
@@ -41,7 +38,7 @@ class EmailPasswordSignInScreen extends StatelessWidget {
 /// - register (create an account)
 class EmailPasswordSignInContents extends ConsumerStatefulWidget {
   const EmailPasswordSignInContents({
-    Key? key,
+    super.key,
     this.onSignedIn,
     required this.formType,
   });
@@ -87,7 +84,6 @@ class _EmailPasswordSignInContentsState
           emailPasswordSignInControllerProvider(widget.formType).notifier);
       final success = await controller.submit(email, password);
       if (success) {
-        // pops the page
         widget.onSignedIn?.call();
       }
     }
@@ -118,13 +114,11 @@ class _EmailPasswordSignInContentsState
 
   @override
   Widget build(BuildContext context) {
-    ref.listen<AsyncValue<void>>(
+    ref.listen<AsyncValue>(
       emailPasswordSignInControllerProvider(widget.formType)
           .select((state) => state.value),
-          //with select we only rebuild widget when the value gets changed, not the formType
       (_, state) => state.showAlertDialogOnError(context),
     );
-
     final state =
         ref.watch(emailPasswordSignInControllerProvider(widget.formType));
     return ResponsiveScrollableCard(
