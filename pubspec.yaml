@@ -13,9 +13,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_launcher_icons: 0.13.1
-  flutter_localizations:
-    sdk: flutter
-  intl: 0.18.0 # Used for date and currency formatting
+  intl: 0.18.1 # Used for date and currency formatting
   flutter_layout_grid: 2.0.3 # Used for content-sized items in the products grid layout
   flutter_rating_bar: 4.0.1 # Used for the "leave a rating" feature
   go_router: 7.0.0
