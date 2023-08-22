@@ -12,7 +12,8 @@ class GoldenRobot {
   final WidgetTester tester;
 
   /// Loads the cached material icon font.
-  /// Only necessary for golden tests. Relies on the tool updating cached assets
+  /// Only necessary for golden tests.
+  /// Relies on the tool updating cached assets
   /// before running tests. More info here:
   /// https://stackoverflow.com/questions/65191069/golden-tests-with-custom-icon-font-class
   Future<void> loadMaterialIconFont() async {

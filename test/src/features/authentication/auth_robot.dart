@@ -1,5 +1,11 @@
 import 'package:ecommerce_app/src/common_widgets/alert_dialogs.dart';
+import 'package:ecommerce_app/src/common_widgets/custom_text_button.dart';
+import 'package:ecommerce_app/src/common_widgets/primary_button.dart';
+import 'package:ecommerce_app/src/features/authentication/data/fake_auth_repository.dart';
 import 'package:ecommerce_app/src/features/authentication/presentation/account/account_screen.dart';
+import 'package:ecommerce_app/src/features/authentication/presentation/sign_in/email_password_sign_in_screen.dart';
+import 'package:ecommerce_app/src/features/authentication/presentation/sign_in/email_password_sign_in_state.dart';
+import 'package:ecommerce_app/src/features/products/presentation/home_app_bar/more_menu_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -8,10 +14,73 @@ class AuthRobot {
   AuthRobot(this.tester);
   final WidgetTester tester;
 
-  Future<void> pumpAccountScreen() async {
+  Future<void> openEmailAndPasswordScreen() async {
+    final finder = find.byKey(MoreMenuButton.signInKey);
+    expect(finder, findsOneWidget);
+    await tester.tap(finder);
+    await tester.pumpAndSettle();
+  }
+
+  Future<void> pumpEmailPasswordSignInContents({
+    required FakeAuthRepository authRepository,
+    required EmailPasswordSignInFormType formType,
+    VoidCallback? onSignIn,
+  }) {
+    return tester.pumpWidget(ProviderScope(
+      overrides: [
+        authRepositoryProvider.overrideWithValue(authRepository),
+      ],
+      child: MaterialApp(
+        home: Scaffold(
+          body: EmailPasswordSignInContents(
+            formType: formType,
+            onSignedIn: onSignIn,
+          ),
+        ),
+      ),
+    ));
+  }
+
+  Future<void> tapEmailAndPasswordSubmitButton() async {
+    final primaryButton = find.byType(PrimaryButton);
+    expect(primaryButton, findsOneWidget);
+    await tester.tap(primaryButton);
+    await tester.pumpAndSettle();
+  }
+
+  Future<void> enterEmail(String email) async {
+    final emailField = find.byKey(EmailPasswordSignInScreen.emailKey);
+    expect(emailField, findsOneWidget);
+    await tester.enterText(emailField, email);
+  }
+
+  Future<void> enterPassword(String password) async {
+    final passwordField = find.byKey(EmailPasswordSignInScreen.passwordKey);
+    expect(passwordField, findsOneWidget);
+    await tester.enterText(passwordField, password);
+  }
+
+  Future<void> signInWithEmailAndPassword() async {
+    await enterEmail('test@test.com');
+    await enterPassword('123456');
+    await tapEmailAndPasswordSubmitButton();
+  }
+
+  Future<void> openAccountScreen() async {
+    final finder = find.byKey(MoreMenuButton.accountKey);
+    expect(finder, findsOneWidget);
+    await tester.tap(finder);
+    await tester.pumpAndSettle();
+  }
+
+  Future<void> pumpAccountScreen({FakeAuthRepository? authRepository}) async {
     await tester.pumpWidget(
-      const ProviderScope(
-        child: MaterialApp(
+      ProviderScope(
+        overrides: [
+          if (authRepository != null)
+            authRepositoryProvider.overrideWithValue(authRepository),
+        ],
+        child: const MaterialApp(
           home: AccountScreen(),
         ),
       ),
@@ -47,5 +116,38 @@ class AuthRobot {
     expect(logoutButton, findsOneWidget);
     await tester.tap(logoutButton);
     await tester.pump();
+  }
+
+  void expectErrorAlertFound() {
+    final finder = find.text('Error');
+    expect(finder, findsOneWidget);
+  }
+
+  void expectErrorAlertNotFound() {
+    final finder = find.text('Error');
+    expect(finder, findsNothing);
+  }
+
+  void expectCircularProgressIndicator() {
+    final finder = find.byType(CircularProgressIndicator);
+    expect(finder, findsOneWidget);
+  }
+
+  Future<void> toggleSignInToRegister() async {
+    final toggleButton = find.byType(CustomTextButton);
+    expect(toggleButton, findsOneWidget);
+    await tester.tap(toggleButton);
+    await tester.pump();
+    final finder = find.text('Create an account');
+    expect(finder, findsOneWidget);
+  }
+
+  Future<void> toggleRegisterToSignIn() async {
+    final toggleButton = find.byType(CustomTextButton);
+    expect(toggleButton, findsOneWidget);
+    await tester.tap(toggleButton);
+    await tester.pump();
+    final finder = find.text('Sign in');
+    expect(finder, findsOneWidget);
   }
 }
