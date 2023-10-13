@@ -14,7 +14,7 @@ class AuthRobot {
   AuthRobot(this.tester);
   final WidgetTester tester;
 
-  Future<void> openEmailAndPasswordScreen() async {
+  Future<void> openEmailPasswordSignInScreen() async {
     final finder = find.byKey(MoreMenuButton.signInKey);
     expect(finder, findsOneWidget);
     await tester.tap(finder);
