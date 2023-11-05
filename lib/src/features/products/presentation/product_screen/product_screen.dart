@@ -5,8 +5,11 @@ import 'package:ecommerce_app/src/features/products/presentation/home_app_bar/ho
 import 'package:ecommerce_app/src/features/products/presentation/product_screen/leave_review_action.dart';
 import 'package:ecommerce_app/src/features/products/presentation/product_screen/product_average_rating.dart';
 import 'package:ecommerce_app/src/features/reviews/presentation/product_reviews/product_reviews_list.dart';
+import 'package:ecommerce_app/src/features/wishlist/presentation/add_to_wishlist/add_to_wishlist_controller.dart';
+import 'package:ecommerce_app/src/features/wishlist/presentation/add_to_wishlist/add_to_wishlist_widget.dart';
 import 'package:ecommerce_app/src/localization/string_hardcoded.dart';
 import 'package:ecommerce_app/src/common_widgets/empty_placeholder_widget.dart';
+import 'package:ecommerce_app/src/utils/async_value_ui.dart';
 import 'package:ecommerce_app/src/utils/currency_formatter.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_app/src/common_widgets/custom_image.dart';
@@ -59,6 +62,10 @@ class ProductDetails extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    ref.listen<AsyncValue<void>>(
+      addToWishlistControllerProvider,
+      (_, state) => state.showAlertDialogOnError(context),
+    );
     final priceFormatted =
         ref.watch(currencyFormatterProvider).format(product.price);
     return ResponsiveTwoColumnLayout(
@@ -75,8 +82,17 @@ class ProductDetails extends ConsumerWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Text(product.title,
-                  style: Theme.of(context).textTheme.titleLarge),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Text(product.title,
+                        style: Theme.of(context).textTheme.titleLarge),
+                  ),
+                  AddToWishlistWidget(product: product),
+                ],
+              ),
+
               gapH8,
               Text(product.description),
               // Only show average if there is at least one rating

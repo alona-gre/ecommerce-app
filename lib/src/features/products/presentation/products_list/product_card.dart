@@ -1,4 +1,5 @@
 import 'package:ecommerce_app/src/features/products/presentation/product_screen/product_average_rating.dart';
+import 'package:ecommerce_app/src/features/wishlist/presentation/update_wishlist_from_home_screen/update_wishlist_from_home_screen_widget.dart';
 import 'package:ecommerce_app/src/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_app/src/common_widgets/custom_image.dart';
@@ -29,11 +30,20 @@ class ProductCard extends ConsumerWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              CustomImage(imageUrl: product.imageUrl),
+              Stack(
+                alignment: Alignment.topRight,
+                children: [
+                  CustomImage(imageUrl: product.imageUrl),
+
+                  /// "TODO: now it doesn't handle correcly error dialog"
+                  UpdateWishlistFromHomeScreenWidget(product: product),
+                ],
+              ),
               gapH8,
               const Divider(),
               gapH8,
-              Text(product.title, style: Theme.of(context).textTheme.titleLarge),
+              Text(product.title,
+                  style: Theme.of(context).textTheme.titleLarge),
               if (product.numRatings >= 1) ...[
                 gapH8,
                 ProductAverageRating(product: product),

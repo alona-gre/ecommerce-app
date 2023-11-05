@@ -1,11 +1,12 @@
 import 'dart:math';
-
 import 'package:ecommerce_app/src/common_widgets/async_value_widget.dart';
 import 'package:ecommerce_app/src/features/products/data/fake_products_repository.dart';
 import 'package:ecommerce_app/src/features/products/domain/product.dart';
 import 'package:ecommerce_app/src/features/products/presentation/products_list/product_card.dart';
+import 'package:ecommerce_app/src/features/wishlist/presentation/update_wishlist_from_home_screen/update_wishlist_from_home_screen_controller.dart';
 import 'package:ecommerce_app/src/localization/string_hardcoded.dart';
 import 'package:ecommerce_app/src/routing/app_router.dart';
+import 'package:ecommerce_app/src/utils/async_value_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_layout_grid/flutter_layout_grid.dart';
 import 'package:ecommerce_app/src/constants/app_sizes.dart';
@@ -18,6 +19,10 @@ class ProductsGrid extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    ref.listen<AsyncValue<void>>(
+      updateWishlistFromHomeScreenControllerProvider,
+      (_, state) => state.showAlertDialogOnError(context),
+    );
     final productsListValue = ref.watch(productsListStreamProvider);
     return AsyncValueWidget<List<Product>>(
       value: productsListValue,

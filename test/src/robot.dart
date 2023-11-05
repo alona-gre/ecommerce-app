@@ -7,6 +7,10 @@ import 'package:ecommerce_app/src/features/cart/data/remote/fake_remote_cart_rep
 import 'package:ecommerce_app/src/features/cart/data/remote/remote_cart_repository.dart';
 import 'package:ecommerce_app/src/features/products/data/fake_products_repository.dart';
 import 'package:ecommerce_app/src/features/products/presentation/home_app_bar/more_menu_button.dart';
+import 'package:ecommerce_app/src/features/wishlist/data/local/fake_focal_wishlist_repository.dart';
+import 'package:ecommerce_app/src/features/wishlist/data/local/local_wishlist_repository.dart';
+import 'package:ecommerce_app/src/features/wishlist/data/remote/remote_wishlist_repository.dart';
+import 'package:ecommerce_app/src/features/wishlist/data/remote/fake_remote_wishlist_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
@@ -14,6 +18,7 @@ import 'package:go_router/go_router.dart';
 import 'features/authentication/auth_robot.dart';
 import 'features/cart/cart_robot.dart';
 import 'features/products/data/products_robot.dart';
+import 'features/wishlist/presentation/wishlist_robot.dart';
 import 'goldens/golden_robot.dart';
 
 class Robot {
@@ -21,11 +26,13 @@ class Robot {
       : auth = AuthRobot(tester),
         products = ProductsRobot(tester),
         cart = CartRobot(tester),
+        wishlist = WishlistRobot(tester),
         golden = GoldenRobot(tester);
   final WidgetTester tester;
   final AuthRobot auth;
   final ProductsRobot products;
   final CartRobot cart;
+  final WishlistRobot wishlist;
   final GoldenRobot golden;
 
   Future<void> pumpMyApp() async {
@@ -37,6 +44,10 @@ class Robot {
     final authRepository = FakeAuthRepository(addDelay: false);
     final localCartRepository = FakeLocalCartRepository(addDelay: false);
     final remoteCartRepository = FakeRemoteCartRepository(addDelay: false);
+    final localWishlistRepository =
+        FakeLocalWishlistRepository(addDelay: false);
+    final remoteWishlistRepository =
+        FakeRemoteWishlistRepository(addDelay: false);
     // * Create ProviderContainer with any required overrides
     final container = ProviderContainer(
       overrides: [
@@ -44,6 +55,10 @@ class Robot {
         authRepositoryProvider.overrideWithValue(authRepository),
         localCartRepositoryProvider.overrideWithValue(localCartRepository),
         remoteCartRepositoryProvider.overrideWithValue(remoteCartRepository),
+        localWishlistRepositoryProvider
+            .overrideWithValue(localWishlistRepository),
+        remoteWishlistRepositoryProvider
+            .overrideWithValue(remoteWishlistRepository),
       ],
     );
     // * Initialize CartSyncService to start the listener

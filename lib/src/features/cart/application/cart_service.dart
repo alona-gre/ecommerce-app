@@ -28,12 +28,12 @@ class CartService {
 
   /// set the Cart to remote or local repository
   /// depending on the user auth state
-  Future<void> _setCart(Cart cart) {
+  Future<void> _setCart(Cart cart) async {
     final user = ref.read(authRepositoryProvider).currentUser;
     if (user != null) {
-      return ref.read(remoteCartRepositoryProvider).setCart(user.uid, cart);
+      await ref.read(remoteCartRepositoryProvider).setCart(user.uid, cart);
     } else {
-      return ref.read(localCartRepositoryProvider).setCart(cart);
+      await ref.read(localCartRepositoryProvider).setCart(cart);
     }
   }
 
