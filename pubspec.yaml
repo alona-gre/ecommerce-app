@@ -16,7 +16,7 @@ dependencies:
   intl: 0.18.1 # Used for date and currency formatting
   flutter_layout_grid: 2.0.4 # Used for content-sized items in the products grid layout
   flutter_rating_bar: 4.0.1 # Used for the "leave a rating" feature
-  go_router: 8.0.0
+  go_router: 10.1.0
   flutter_riverpod: ^2.3.6
   shimmer: ^3.0.0
   rxdart: ^0.27.7
