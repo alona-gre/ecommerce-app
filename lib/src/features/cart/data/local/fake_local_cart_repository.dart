@@ -9,15 +9,12 @@ class FakeLocalCartRepository implements LocalCartRepository {
 
   final _cart = InMemoryStore<Cart>(const Cart());
 
-  /// we fetch the latest version of the Cart
   @override
   Future<Cart> fetchCart() => Future.value(_cart.value);
 
-  /// we watch the changes to the Cart
   @override
   Stream<Cart> watchCart() => _cart.stream;
 
-  /// we set a new value of the Cart
   @override
   Future<void> setCart(Cart cart) async {
     await delay(addDelay);

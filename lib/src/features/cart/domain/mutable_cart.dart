@@ -4,7 +4,7 @@ import 'package:ecommerce_app/src/features/products/domain/product.dart';
 
 /// Helper extension used to mutate the items in the shopping cart.
 extension MutableCart on Cart {
-  /// add an item to the cart by *overriding* the quantity (value in the Map) if it already exists
+  /// add an item to the cart by *overriding* the quantity if it already exists
   Cart setItem(Item item) {
     final copy = Map<ProductID, int>.from(items);
     copy[item.productId] = item.quantity;

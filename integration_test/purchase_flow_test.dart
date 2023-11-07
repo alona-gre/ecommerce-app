@@ -18,10 +18,7 @@ void main() {
     await r.closePage();
     // add to cart flows
     await r.products.selectProduct();
-
-    /// TO-DO add fix
-    /// await r.wishlist.addToWishlistOnProductScreen();
-
+    await r.wishlist.addToWishlistOnProductScreen();
     await r.products.setProductQuantity(3);
     await r.cart.addToCart();
     await r.cart.openCart();
@@ -37,11 +34,10 @@ void main() {
     r.cart.expectFindNCartItems(1);
     await r.closePage();
 
-    /// TO-DO add fix
-    /// check wishlist again (to verify wishlist synchronization)
-    /// await r.wishlist.openWishlist();
-    /// r.wishlist.expectFindNWishlistItems(count: 1);
-    /// await r.closePage();
+    // check wishlist again (to verify wishlist synchronization)
+    await r.wishlist.openWishlist();
+    r.wishlist.expectFindNWishlistItems(count: 1);
+    await r.closePage();
 
     // sign out
     await r.openPopupMenu();

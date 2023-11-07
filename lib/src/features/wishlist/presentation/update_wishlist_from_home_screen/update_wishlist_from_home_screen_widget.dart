@@ -21,7 +21,7 @@ class UpdateWishlistFromHomeScreenWidget extends ConsumerWidget {
     final isFavorite = ref.watch(isFavoriteProvider(product.id));
 
     return FavoriteButton(
-      // isLoading: state.isLoading,
+      isLoading: state.isLoading,
       isFavorite: isFavorite,
       onPressed: !isFavorite && !state.isLoading
           ? () {

@@ -7,6 +7,7 @@ import 'package:ecommerce_app/src/features/cart/data/remote/fake_remote_cart_rep
 import 'package:ecommerce_app/src/features/cart/data/remote/remote_cart_repository.dart';
 import 'package:ecommerce_app/src/features/products/data/fake_products_repository.dart';
 import 'package:ecommerce_app/src/features/products/presentation/home_app_bar/more_menu_button.dart';
+import 'package:ecommerce_app/src/features/wishlist/application/wishlist_sync_service.dart';
 import 'package:ecommerce_app/src/features/wishlist/data/local/fake_focal_wishlist_repository.dart';
 import 'package:ecommerce_app/src/features/wishlist/data/local/local_wishlist_repository.dart';
 import 'package:ecommerce_app/src/features/wishlist/data/remote/remote_wishlist_repository.dart';
@@ -17,7 +18,7 @@ import 'package:go_router/go_router.dart';
 
 import 'features/authentication/auth_robot.dart';
 import 'features/cart/cart_robot.dart';
-import 'features/products/data/products_robot.dart';
+import 'features/products/products_robot.dart';
 import 'features/wishlist/presentation/wishlist_robot.dart';
 import 'goldens/golden_robot.dart';
 
@@ -63,6 +64,7 @@ class Robot {
     );
     // * Initialize CartSyncService to start the listener
     container.read(cartSyncServiceProvider);
+    container.read(wishlistSyncServiceProvider);
     // * Entry point of the app
     await tester.pumpWidget(
       UncontrolledProviderScope(

@@ -10,6 +10,7 @@ class WishlistRobot {
 
   Future<void> addToWishlistOnProductScreen() async {
     final finder = find.byKey(FavoriteButton.addToWishlistButtonKey);
+    expect(finder, findsOneWidget);
     await tester.tap(finder);
     await tester.pumpAndSettle();
   }

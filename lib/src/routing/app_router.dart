@@ -20,9 +20,9 @@ enum AppRoute {
   product,
   leaveReview,
   cart,
+  wishlist,
   checkout,
   orders,
-  wishlist,
   account,
   signIn,
 }
@@ -93,19 +93,19 @@ final goRouterProvider = Provider<GoRouter>((ref) {
             ],
           ),
           GoRoute(
-            path: 'orders',
-            name: AppRoute.orders.name,
-            pageBuilder: (context, state) => const MaterialPage(
-              fullscreenDialog: true,
-              child: OrdersListScreen(),
-            ),
-          ),
-          GoRoute(
             path: 'wishlist',
             name: AppRoute.wishlist.name,
             pageBuilder: (context, state) => const MaterialPage(
               fullscreenDialog: true,
               child: WishlistScreen(),
+            ),
+          ),
+          GoRoute(
+            path: 'orders',
+            name: AppRoute.orders.name,
+            pageBuilder: (context, state) => const MaterialPage(
+              fullscreenDialog: true,
+              child: OrdersListScreen(),
             ),
           ),
           GoRoute(

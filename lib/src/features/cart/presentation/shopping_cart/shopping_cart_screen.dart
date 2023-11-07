@@ -31,7 +31,7 @@ class ShoppingCartScreen extends ConsumerWidget {
       body: Consumer(
         builder: (context, ref, child) {
           final cartValue = ref.watch(cartProvider);
-          return AsyncValueWidget(
+          return AsyncValueWidget<Cart>(
             value: cartValue,
             data: (cart) => ShoppingCartItemsBuilder(
               items: cart.toItemsList(),

@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
@@ -35,10 +34,10 @@ class Cart {
   String toString() => 'Cart(items: $items)';
 
   @override
-  bool operator ==(covariant Cart other) {
+  bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return mapEquals(other.items, items);
+    return other is Cart && mapEquals(other.items, items);
   }
 
   @override
@@ -47,8 +46,6 @@ class Cart {
 
 extension CartItems on Cart {
   List<Item> toItemsList() {
-    /// this method converts a Map of items into a List of items
-    /// used to display all the items of the Shopping cart
     return items.entries.map((entry) {
       return Item(
         productId: entry.key,

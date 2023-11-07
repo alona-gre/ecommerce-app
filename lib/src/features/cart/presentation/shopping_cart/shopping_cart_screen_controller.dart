@@ -4,15 +4,14 @@ import 'package:ecommerce_app/src/features/products/domain/product.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ShoppingCartScreenController extends StateNotifier<AsyncValue<void>> {
-  final CartService cartService;
-
   ShoppingCartScreenController({required this.cartService})
       : super(const AsyncData(null));
+  final CartService cartService;
 
   Future<void> updateItemQuantity(ProductID productId, int quantity) async {
     state = const AsyncLoading();
-    final updatedItem = Item(productId: productId, quantity: quantity);
-    state = await AsyncValue.guard(() => cartService.setItem(updatedItem));
+    final updated = Item(productId: productId, quantity: quantity);
+    state = await AsyncValue.guard(() => cartService.setItem(updated));
   }
 
   Future<void> removeItemById(ProductID productId) async {
@@ -25,5 +24,6 @@ final shoppingCartScreenControllerProvider =
     StateNotifierProvider<ShoppingCartScreenController, AsyncValue<void>>(
         (ref) {
   return ShoppingCartScreenController(
-      cartService: ref.watch(cartServiceProvider));
+    cartService: ref.watch(cartServiceProvider),
+  );
 });

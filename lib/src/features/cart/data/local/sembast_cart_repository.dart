@@ -7,9 +7,8 @@ import 'package:sembast/sembast_io.dart';
 import 'package:sembast_web/sembast_web.dart';
 
 class SembastCartRepository implements LocalCartRepository {
-  final Database db;
   SembastCartRepository(this.db);
-
+  final Database db;
   final store = StoreRef.main();
 
   static Future<Database> createDatabase(String filename) async {
@@ -39,7 +38,6 @@ class SembastCartRepository implements LocalCartRepository {
 
   @override
   Future<void> setCart(Cart cart) {
-    // throw Exception('');
     return store.record(cartItemsKey).put(db, cart.toJson());
   }
 

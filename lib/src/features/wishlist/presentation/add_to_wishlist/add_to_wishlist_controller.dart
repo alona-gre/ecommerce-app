@@ -10,7 +10,7 @@ class AddToWishlistController extends StateNotifier<AsyncValue<bool>> {
   }) : super(const AsyncData(false));
 
   Future<void> addProductToWishlist(WishlistItem wishlistItem) async {
-    // state = const AsyncLoading<bool>().copyWithPrevious(state);
+    state = const AsyncLoading<bool>().copyWithPrevious(state);
     final value = await AsyncValue.guard(
       () => wishlistService.setWishlistProduct(wishlistItem),
     );
@@ -22,7 +22,7 @@ class AddToWishlistController extends StateNotifier<AsyncValue<bool>> {
   }
 
   Future<void> removeProductFromWishlist(WishlistItem wishlistItem) async {
-    //state = const AsyncLoading<bool>().copyWithPrevious(state);
+    state = const AsyncLoading<bool>().copyWithPrevious(state);
     final value = await AsyncValue.guard(
       () => wishlistService.removeWishlistProduct(wishlistItem),
     );

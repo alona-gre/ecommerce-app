@@ -11,11 +11,10 @@ import 'package:ecommerce_app/src/features/products/domain/product.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class CartService {
+  CartService(this.ref);
   final Ref ref;
 
-  CartService({required this.ref});
-
-  /// fetch the Cart from remote or local repository
+  /// fetch the cart from the local or remote repository
   /// depending on the user auth state
   Future<Cart> _fetchCart() {
     final user = ref.read(authRepositoryProvider).currentUser;
@@ -26,7 +25,7 @@ class CartService {
     }
   }
 
-  /// set the Cart to remote or local repository
+  /// save the cart to the local or remote repository
   /// depending on the user auth state
   Future<void> _setCart(Cart cart) async {
     final user = ref.read(authRepositoryProvider).currentUser;
@@ -37,47 +36,41 @@ class CartService {
     }
   }
 
-  /// sets an Item to remote or local repository
-  /// depending on the user auth state
+  /// sets an item in the local or remote cart depending on the user auth state
   Future<void> setItem(Item item) async {
     final cart = await _fetchCart();
-    final updatedCart = cart.setItem(item);
-    await _setCart(updatedCart);
+    final updated = cart.setItem(item);
+    await _setCart(updated);
   }
 
-  /// adds an Item to remote or local repository
-  /// depending on the user auth state
+  /// adds an item in the local or remote cart depending on the user auth state
   Future<void> addItem(Item item) async {
     final cart = await _fetchCart();
-    final updatedCart = cart.addItem(item);
-    await _setCart(updatedCart);
+    final updated = cart.addItem(item);
+    await _setCart(updated);
   }
 
-  /// removes an Item from remote or local repository
-  /// depending on the user auth state
+  /// removes an item from the local or remote cart depending on the user auth
+  /// state
   Future<void> removeItemById(ProductID productId) async {
     final cart = await _fetchCart();
-    final updatedCart = cart.removeItemById(productId);
-    await _setCart(updatedCart);
+    final updated = cart.removeItemById(productId);
+    await _setCart(updated);
   }
 }
 
 final cartServiceProvider = Provider<CartService>((ref) {
-  return CartService(
-    ref: ref,
-  );
+  return CartService(ref);
 });
 
-final cartProvider = StreamProvider<Cart>(
-  (ref) {
-    final user = ref.watch(authStateChangesProvider).value;
-    if (user != null) {
-      return ref.read(remoteCartRepositoryProvider).watchCart(user.uid);
-    } else {
-      return ref.read(localCartRepositoryProvider).watchCart();
-    }
-  },
-);
+final cartProvider = StreamProvider<Cart>((ref) {
+  final user = ref.watch(authStateChangesProvider).value;
+  if (user != null) {
+    return ref.watch(remoteCartRepositoryProvider).watchCart(user.uid);
+  } else {
+    return ref.watch(localCartRepositoryProvider).watchCart();
+  }
+});
 
 final cartItemsCountProvider = Provider<int>((ref) {
   return ref.watch(cartProvider).maybeMap(
@@ -87,13 +80,11 @@ final cartItemsCountProvider = Provider<int>((ref) {
 });
 
 final cartTotalProvider = Provider.autoDispose<double>((ref) {
-  /// We watch two providers here: cartProvider (to get the current cart)
-  /// and productsListStreamProvider (to get the price of the products)
   final cart = ref.watch(cartProvider).value ?? const Cart();
   final productsList = ref.watch(productsListStreamProvider).value ?? [];
   if (cart.items.isNotEmpty && productsList.isNotEmpty) {
     var total = 0.0;
-    for (var item in cart.items.entries) {
+    for (final item in cart.items.entries) {
       final product =
           productsList.firstWhere((product) => product.id == item.key);
       total += product.price * item.value;
@@ -104,16 +95,15 @@ final cartTotalProvider = Provider.autoDispose<double>((ref) {
   }
 });
 
-final itemAvailableQuantityProvider = Provider.autoDispose.family<int, Product>(
-  (ref, product) {
-    final cart = ref.watch(cartProvider).value;
-    if (cart != null) {
-      // get the current quantity for the given product in the cart
-      final quantity = cart.items[product.id] ?? 0;
-      // subtract it from the available quantity
-      return max(0, product.availableQuantity - quantity);
-    } else {
-      return product.availableQuantity;
-    }
-  },
-);
+final itemAvailableQuantityProvider =
+    Provider.autoDispose.family<int, Product>((ref, product) {
+  final cart = ref.watch(cartProvider).value;
+  if (cart != null) {
+    // get the current quantity for the given product in the cart
+    final quantity = cart.items[product.id] ?? 0;
+    // subtract it from the product available quantity
+    return max(0, product.availableQuantity - quantity);
+  } else {
+    return product.availableQuantity;
+  }
+});

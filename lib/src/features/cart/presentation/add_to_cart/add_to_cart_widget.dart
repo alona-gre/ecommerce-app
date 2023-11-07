@@ -38,7 +38,6 @@ class AddToCartWidget extends ConsumerWidget {
               // let the user choose up to the available quantity or
               // 10 items at most
               maxQuantity: min(availableQuantity, 10),
-
               onChanged: state.isLoading
                   ? null
                   : (quantity) => ref
@@ -52,7 +51,7 @@ class AddToCartWidget extends ConsumerWidget {
         gapH8,
         PrimaryButton(
           isLoading: state.isLoading,
-          // only enable teh button if there is enough stock
+          // only enable the button if there is enough stock
           onPressed: availableQuantity > 0
               ? () => ref
                   .read(addToCartControllerProvider.notifier)

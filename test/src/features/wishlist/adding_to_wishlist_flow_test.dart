@@ -21,19 +21,14 @@ void main() {
     r.products.expectFindAllProductCards();
 
     // check wishlist again (to verify wishlist synchronization)
-
     await r.wishlist.openWishlist();
-
-    /// To-Do add fix:
-    /// the local wishlist is not synced to remote after login
-
-    // r.wishlist.expectFindNWishlistItems(count: 2);
-    // await r.closePage();
-    // // sign out
-    // await r.openPopupMenu();
-    // await r.auth.openAccountScreen();
-    // await r.auth.tapLogoutButton();
-    // await r.auth.tapDialogLogoutButton();
-    // r.products.expectFindAllProductCards();
+    r.wishlist.expectFindNWishlistItems(count: 2);
+    await r.closePage();
+    // sign out
+    await r.openPopupMenu();
+    await r.auth.openAccountScreen();
+    await r.auth.tapLogoutButton();
+    await r.auth.tapDialogLogoutButton();
+    r.products.expectFindAllProductCards();
   });
 }
