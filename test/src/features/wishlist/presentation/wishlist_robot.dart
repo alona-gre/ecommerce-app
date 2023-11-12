@@ -1,4 +1,5 @@
 import 'package:ecommerce_app/src/common_widgets/favorite_button.dart';
+import 'package:ecommerce_app/src/features/cart/presentation/cart_total/cart_total_text.dart';
 import 'package:ecommerce_app/src/features/products/presentation/home_app_bar/wishlist_icon.dart';
 import 'package:ecommerce_app/src/features/wishlist/presentation/wishlist/wishlist_item.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -66,5 +67,10 @@ class WishlistRobot {
   void expectFindNWishlistItems({required int count}) {
     final finder = find.byType(WishlistItemWidget);
     expect(finder, findsNWidgets(count));
+  }
+
+  void expectGoToCartButton() {
+    final finder = find.byType(CartTotalText);
+    expect(finder, findsOneWidget);
   }
 }

@@ -51,7 +51,7 @@ void main() {
       await r.pumpEmailPasswordSignInContents(
         authRepository: authRepository,
         formType: EmailPasswordSignInFormType.signIn,
-        onSignIn: () => didSignIn = true,
+        onSignedIn: () => didSignIn = true,
       );
       await r.enterEmail(testEmail);
       await r.enterPassword(testPassword);
@@ -100,7 +100,7 @@ void main() {
         authRepository: authRepository,
         formType: EmailPasswordSignInFormType.signIn,
       );
-      r.toggleSignInToRegister();
+      r.tapFormToggleButton();
     });
 
     testWidgets('''
@@ -113,7 +113,7 @@ void main() {
         authRepository: authRepository,
         formType: EmailPasswordSignInFormType.register,
       );
-      r.toggleRegisterToSignIn();
+      r.tapFormToggleButton();
     });
   });
 }

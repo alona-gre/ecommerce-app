@@ -10,8 +10,10 @@ void main() {
     // add to wishlist flow
     await r.wishlist.addToWishlistOnHomeScreen(atIndex: 0);
     await r.wishlist.addToWishlistOnHomeScreen(atIndex: 2);
+    await r.wishlist.removeFromWishlistOnHomeScreen(atIndex: 0);
     await r.wishlist.openWishlist();
-    r.wishlist.expectFindNWishlistItems(count: 2);
+    r.wishlist.expectFindNWishlistItems(count: 1);
+    r.wishlist.expectGoToCartButton();
     await r.closePage();
 
     // sign in
@@ -22,7 +24,7 @@ void main() {
 
     // check wishlist again (to verify wishlist synchronization)
     await r.wishlist.openWishlist();
-    r.wishlist.expectFindNWishlistItems(count: 2);
+    r.wishlist.expectFindNWishlistItems(count: 1);
     await r.closePage();
     // sign out
     await r.openPopupMenu();

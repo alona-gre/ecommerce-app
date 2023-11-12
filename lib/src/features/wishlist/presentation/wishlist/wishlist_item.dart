@@ -64,9 +64,6 @@ class WishlistItemContents extends ConsumerWidget {
   final WishlistItem wishlistItem;
   final int itemIndex;
 
-  // * Keys for testing using find.byKey()
-  static Key deleteKey(int index) => Key('delete-$index');
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final priceFormatted =

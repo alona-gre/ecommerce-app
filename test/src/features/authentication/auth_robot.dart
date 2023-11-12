@@ -24,27 +24,36 @@ class AuthRobot {
   Future<void> pumpEmailPasswordSignInContents({
     required FakeAuthRepository authRepository,
     required EmailPasswordSignInFormType formType,
-    VoidCallback? onSignIn,
+    VoidCallback? onSignedIn,
   }) {
-    return tester.pumpWidget(ProviderScope(
-      overrides: [
-        authRepositoryProvider.overrideWithValue(authRepository),
-      ],
-      child: MaterialApp(
-        home: Scaffold(
-          body: EmailPasswordSignInContents(
-            formType: formType,
-            onSignedIn: onSignIn,
+    return tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          authRepositoryProvider.overrideWithValue(authRepository),
+        ],
+        child: MaterialApp(
+          home: Scaffold(
+            body: EmailPasswordSignInContents(
+              formType: formType,
+              onSignedIn: onSignedIn,
+            ),
           ),
         ),
       ),
-    ));
+    );
   }
 
   Future<void> tapEmailAndPasswordSubmitButton() async {
     final primaryButton = find.byType(PrimaryButton);
     expect(primaryButton, findsOneWidget);
     await tester.tap(primaryButton);
+    await tester.pumpAndSettle();
+  }
+
+  Future<void> tapFormToggleButton() async {
+    final toggleButton = find.byType(CustomTextButton);
+    expect(toggleButton, findsOneWidget);
+    await tester.tap(toggleButton);
     await tester.pumpAndSettle();
   }
 
@@ -60,9 +69,27 @@ class AuthRobot {
     await tester.enterText(passwordField, password);
   }
 
+  void expectEmailAndPasswordFieldsFound() {
+    final emailField = find.byKey(EmailPasswordSignInScreen.emailKey);
+    expect(emailField, findsOneWidget);
+    final passwordField = find.byKey(EmailPasswordSignInScreen.passwordKey);
+    expect(passwordField, findsOneWidget);
+  }
+
+  void expectCreateAccountButtonFound() {
+    final dialogTitle = find.text('Create an account');
+    expect(dialogTitle, findsOneWidget);
+  }
+
+  void expectCreateAccountButtonNotFound() {
+    final dialogTitle = find.text('Create an account');
+    expect(dialogTitle, findsNothing);
+  }
+
   Future<void> signInWithEmailAndPassword() async {
     await enterEmail('test@test.com');
-    await enterPassword('123456');
+    await tester.pump();
+    await enterPassword('test1234');
     await tapEmailAndPasswordSubmitButton();
   }
 
@@ -78,7 +105,9 @@ class AuthRobot {
       ProviderScope(
         overrides: [
           if (authRepository != null)
-            authRepositoryProvider.overrideWithValue(authRepository),
+            authRepositoryProvider.overrideWithValue(
+              authRepository,
+            )
         ],
         child: const MaterialApp(
           home: AccountScreen(),
@@ -130,24 +159,6 @@ class AuthRobot {
 
   void expectCircularProgressIndicator() {
     final finder = find.byType(CircularProgressIndicator);
-    expect(finder, findsOneWidget);
-  }
-
-  Future<void> toggleSignInToRegister() async {
-    final toggleButton = find.byType(CustomTextButton);
-    expect(toggleButton, findsOneWidget);
-    await tester.tap(toggleButton);
-    await tester.pump();
-    final finder = find.text('Create an account');
-    expect(finder, findsOneWidget);
-  }
-
-  Future<void> toggleRegisterToSignIn() async {
-    final toggleButton = find.byType(CustomTextButton);
-    expect(toggleButton, findsOneWidget);
-    await tester.tap(toggleButton);
-    await tester.pump();
-    final finder = find.text('Sign in');
     expect(finder, findsOneWidget);
   }
 }
