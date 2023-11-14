@@ -19,7 +19,8 @@ void main() {
     // sign in
     await r.openPopupMenu();
     await r.auth.openEmailPasswordSignInScreen();
-    await r.auth.signInWithEmailAndPassword();
+    await r.auth.tapFormToggleButton();
+    await r.auth.enterAndSubmitEmailAndPassword();
     r.products.expectFindAllProductCards();
     // check cart again (to verify cart synchronization)
     await r.cart.openCart();
