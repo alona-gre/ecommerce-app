@@ -1,3 +1,4 @@
+import 'package:ecommerce_app/src/exceptions/error_logger.dart';
 import 'package:ecommerce_app/src/features/authentication/data/fake_auth_repository.dart';
 import 'package:ecommerce_app/src/features/authentication/domain/app_user.dart';
 import 'package:ecommerce_app/src/features/wishlist/data/local/local_wishlist_repository.dart';
@@ -45,8 +46,8 @@ class WishlistSyncService {
         // remove all the items from the local wishlist
         await localWishlistRepository.setWishlist(const Wishlist());
       }
-    } catch (e) {
-      /// Handle error and/or rethrow
+    } catch (e, st) {
+      ref.read(errorLoggerProvider).logError(e, st);
     }
   }
 }
