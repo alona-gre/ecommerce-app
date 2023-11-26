@@ -31,7 +31,7 @@ class ProductRatingBar extends StatelessWidget {
     return RatingBar.builder(
       initialRating: initialRating,
       ignoreGestures: ignoreGestures,
-      glow: false,
+      glow: true,
       allowHalfRating: true,
       itemSize: itemSize,
       itemBuilder: (context, index) => Icon(

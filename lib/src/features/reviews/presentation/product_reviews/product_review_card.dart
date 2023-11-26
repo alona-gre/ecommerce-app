@@ -23,7 +23,7 @@ class ProductReviewCard extends ConsumerWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 ProductRatingBar(
-                  initialRating: review.score,
+                  initialRating: review.rating,
                   ignoreGestures: true,
                   itemSize: 20,
                   // TODO: Implement onRatingUpdate
@@ -31,7 +31,8 @@ class ProductReviewCard extends ConsumerWidget {
                     showNotImplementedAlertDialog(context: context);
                   },
                 ),
-                Text(dateFormatted, style: Theme.of(context).textTheme.bodySmall),
+                Text(dateFormatted,
+                    style: Theme.of(context).textTheme.bodySmall),
               ],
             ),
             if (review.comment.isNotEmpty) ...[

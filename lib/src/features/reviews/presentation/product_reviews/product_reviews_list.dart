@@ -15,12 +15,12 @@ class ProductReviewsList extends StatelessWidget {
     final reviews = <Review>[
       Review(
         date: DateTime(2022, 2, 12),
-        score: 4.5,
+        rating: 4.5,
         comment: 'Great product, would buy again!',
       ),
       Review(
         date: DateTime(2022, 2, 10),
-        score: 4.0,
+        rating: 4.0,
         comment: 'Looks great but the packaging was damaged.',
       ),
     ];
