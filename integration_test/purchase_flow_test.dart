@@ -41,6 +41,13 @@ void main() {
     r.wishlist.expectFindNWishlistItems(count: 1);
     await r.closePage();
 
+    // reviews flow
+    await r.products.selectProduct();
+    r.reviews.expectFindLeaveReview();
+    await r.reviews.tapLeaveReviewButton();
+    await r.reviews.createAndSubmitReview('Love it!');
+    r.reviews.expectFindOneReview();
+
     // sign out
     await r.openPopupMenu();
     await r.auth.openAccountScreen();
