@@ -1,4 +1,3 @@
-import 'package:ecommerce_app/src/common_widgets/alert_dialogs.dart';
 import 'package:ecommerce_app/src/common_widgets/async_value_widget.dart';
 import 'package:ecommerce_app/src/constants/breakpoints.dart';
 import 'package:ecommerce_app/src/features/products/domain/product.dart';
