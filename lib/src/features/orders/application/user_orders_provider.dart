@@ -9,16 +9,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 final userOrdersProvider = StreamProvider.autoDispose<List<Order>>((ref) {
   final user = ref.watch(authStateChangesProvider).value;
   if (user != null) {
-    final ordersRepository = ref.watch(ordersRepositoryProvider);
-    return ordersRepository.watchUserOrders(user.uid);
+    return ref.watch(ordersRepositoryProvider).watchUserOrders(user.uid);
   } else {
-    // If the user is null, just return an empty screen.
-    return const Stream.empty();
+    // If the user is null, return an empty list (no orders)
+    return Stream.value([]);
   }
 });
 
 /// Check if a product was previously purchased by the user
-/// NOTE: Only watch this provider if the user is signed in.
 final matchingUserOrdersProvider =
     StreamProvider.autoDispose.family<List<Order>, ProductID>((ref, productId) {
   final user = ref.watch(authStateChangesProvider).value;

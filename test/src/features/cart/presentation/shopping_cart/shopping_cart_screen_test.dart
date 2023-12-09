@@ -14,6 +14,7 @@ void main() {
         r.cart.expectShoppingCartIsEmpty();
       });
     });
+
     testWidgets('Add product with quantity = 1', (tester) async {
       await tester.runAsync(() async {
         final r = Robot(tester);
@@ -38,6 +39,7 @@ void main() {
         r.cart.expectShoppingCartTotalIs('Total: \$75.00');
       });
     });
+
     testWidgets('Add product with quantity = 6', (tester) async {
       await tester.runAsync(() async {
         final r = Robot(tester);

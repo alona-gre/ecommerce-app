@@ -34,8 +34,8 @@ class HomeAppBar extends ConsumerWidget implements PreferredSizeWidget {
       return AppBar(
         title: Text('My Shop'.hardcoded),
         actions: [
-          const ShoppingCartIcon(),
           const WishlistIcon(),
+          const ShoppingCartIcon(),
           MoreMenuButton(user: user),
         ],
       );
@@ -49,18 +49,18 @@ class HomeAppBar extends ConsumerWidget implements PreferredSizeWidget {
             ActionTextButton(
               key: MoreMenuButton.ordersKey,
               text: 'Orders'.hardcoded,
-              onPressed: () => context.pushNamed(AppRoute.orders.name),
+              onPressed: () => context.goNamed(AppRoute.orders.name),
             ),
             ActionTextButton(
               key: MoreMenuButton.accountKey,
               text: 'Account'.hardcoded,
-              onPressed: () => context.pushNamed(AppRoute.account.name),
+              onPressed: () => context.goNamed(AppRoute.account.name),
             ),
           ] else
             ActionTextButton(
               key: MoreMenuButton.signInKey,
               text: 'Sign In'.hardcoded,
-              onPressed: () => context.pushNamed(AppRoute.signIn.name),
+              onPressed: () => context.goNamed(AppRoute.signIn.name),
             )
         ],
       );

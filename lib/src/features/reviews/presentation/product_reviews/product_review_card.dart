@@ -1,4 +1,3 @@
-import 'package:ecommerce_app/src/common_widgets/alert_dialogs.dart';
 import 'package:ecommerce_app/src/features/reviews/presentation/product_reviews/product_rating_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_app/src/constants/app_sizes.dart';
@@ -26,13 +25,10 @@ class ProductReviewCard extends ConsumerWidget {
                   initialRating: review.rating,
                   ignoreGestures: true,
                   itemSize: 20,
-                  // TODO: Implement onRatingUpdate
-                  onRatingUpdate: (value) {
-                    showNotImplementedAlertDialog(context: context);
-                  },
+                  // * ok to use an empty callback here since we're ignoring gestures
+                  onRatingUpdate: (value) {},
                 ),
-                Text(dateFormatted,
-                    style: Theme.of(context).textTheme.bodySmall),
+                Text(dateFormatted, style: Theme.of(context).textTheme.bodySmall),
               ],
             ),
             if (review.comment.isNotEmpty) ...[

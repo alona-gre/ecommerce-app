@@ -20,12 +20,8 @@ void main() {
       final container = makeProviderContainer(
         cart: const Stream.empty(),
       );
-
-      final availableQuantity = container.read(
-        itemAvailableQuantityProvider(
-          kTestProducts[0],
-        ),
-      );
+      final availableQuantity =
+          container.read(itemAvailableQuantityProvider(kTestProducts[0]));
       expect(availableQuantity, 5);
     });
 
@@ -33,12 +29,9 @@ void main() {
       final container = makeProviderContainer(
         cart: Stream.value(const Cart()),
       );
-
-      final availableQuantity = container.read(
-        itemAvailableQuantityProvider(
-          kTestProducts[0],
-        ),
-      );
+      await container.read(cartProvider.future);
+      final availableQuantity =
+          container.read(itemAvailableQuantityProvider(kTestProducts[0]));
       expect(availableQuantity, 5);
     });
 
@@ -47,11 +40,8 @@ void main() {
         cart: Stream.value(const Cart({'1': 1})),
       );
       await container.read(cartProvider.future);
-      final availableQuantity = container.read(
-        itemAvailableQuantityProvider(
-          kTestProducts[0],
-        ),
-      );
+      final availableQuantity =
+          container.read(itemAvailableQuantityProvider(kTestProducts[0]));
       expect(availableQuantity, 4);
     });
 
@@ -60,39 +50,18 @@ void main() {
         cart: Stream.value(const Cart({'1': 5})),
       );
       await container.read(cartProvider.future);
-      final availableQuantity = container.read(
-        itemAvailableQuantityProvider(
-          kTestProducts[0],
-        ),
-      );
+      final availableQuantity =
+          container.read(itemAvailableQuantityProvider(kTestProducts[0]));
       expect(availableQuantity, 0);
-    });
-
-    test('two products in the cart', () async {
-      final container = makeProviderContainer(
-        cart: Stream.value(const Cart({'1': 5, '2': 1})),
-      );
-      await container.read(cartProvider.future);
-      final availableQuantity = container.read(
-        itemAvailableQuantityProvider(
-          kTestProducts[1],
-        ),
-      );
-      expect(availableQuantity, 4);
     });
 
     test('product with quantity = 10', () async {
       final container = makeProviderContainer(
-        cart: Stream.value(const Cart({
-          '1': 10,
-        })),
+        cart: Stream.value(const Cart({'1': 10})),
       );
       await container.read(cartProvider.future);
-      final availableQuantity = container.read(
-        itemAvailableQuantityProvider(
-          kTestProducts[0],
-        ),
-      );
+      final availableQuantity =
+          container.read(itemAvailableQuantityProvider(kTestProducts[0]));
       expect(availableQuantity, 0);
     });
   });

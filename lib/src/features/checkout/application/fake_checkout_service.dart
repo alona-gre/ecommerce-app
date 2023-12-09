@@ -31,8 +31,6 @@ class FakeCheckoutService {
     final cart = await remoteCartRepository.fetchCart(uid);
     if (cart.items.isNotEmpty) {
       final total = _totalPrice(cart);
-      // * If we want to make this code more testable, a DateTime builder
-      // * should be injected as a dependency
       final orderDate = currentDateBuilder();
       // * The orderId is a unique string that could be generated with the UUID
       // * package. Since this is a fake service, we just derive it from the date.

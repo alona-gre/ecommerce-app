@@ -4,14 +4,14 @@ import 'package:ecommerce_app/src/utils/delay.dart';
 import 'package:ecommerce_app/src/utils/in_memory_store.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+/// A repository used to store all user reviews for all products
 class FakeReviewsRepository {
+  FakeReviewsRepository({this.addDelay = true});
   final bool addDelay;
 
-  FakeReviewsRepository({this.addDelay = true});
-
-  /// Reviews Store, where:
-  /// - key: [ProductID]
-  /// - value: a map of [Review] values per each user ID
+  /// Reviews Store
+  /// key: [ProductID]
+  /// value: map of [Review] values for each user ID
   final _reviews = InMemoryStore<Map<ProductID, Map<String, Review>>>({});
 
   /// Single review for a given product given by a specific user
@@ -28,13 +28,14 @@ class FakeReviewsRepository {
   Future<Review?> fetchUserReview(ProductID id, String uid) async {
     await delay(addDelay);
     // access nested maps by productId, then uid
-    return _reviews.value[id]?[uid];
+    return Future.value(_reviews.value[id]?[uid]);
   }
 
   /// All reviews for a given product from all users
-  Stream<List<Review>> watchReviews(ProductID productId) {
+  Stream<List<Review>> watchReviews(ProductID id) {
     return _reviews.stream.map((reviewsData) {
-      final reviews = reviewsData[productId];
+      // access nested maps by productId, then uid
+      final reviews = reviewsData[id];
       if (reviews == null) {
         return [];
       } else {
@@ -43,11 +44,10 @@ class FakeReviewsRepository {
     });
   }
 
-  /// Single review for a given product given by a specific user
-  /// Returns a non-null value if the user has reviewed the product
-  Future<List<Review>> fetchReviews(ProductID productId) {
-    // access maps with reviews by productId
-    final reviews = _reviews.value[productId];
+  /// All reviews for a given product from all users
+  Future<List<Review>> fetchReviews(ProductID id) {
+    // access nested maps by productId, then uid
+    final reviews = _reviews.value[id];
     if (reviews == null) {
       return Future.value([]);
     } else {
@@ -78,11 +78,9 @@ class FakeReviewsRepository {
   }
 }
 
-final reviewsRepositoryProvider = Provider<FakeReviewsRepository>(
-  ((ref) {
-    return FakeReviewsRepository();
-  }),
-);
+final reviewsRepositoryProvider = Provider<FakeReviewsRepository>((ref) {
+  return FakeReviewsRepository();
+});
 
 final productReviewsProvider = StreamProvider.autoDispose
     .family<List<Review>, ProductID>((ref, productId) {

@@ -12,11 +12,10 @@ import 'package:ecommerce_app/src/features/reviews/data/fake_reviews_repository.
 import 'package:ecommerce_app/src/features/wishlist/application/wishlist_sync_service.dart';
 import 'package:ecommerce_app/src/features/wishlist/data/local/fake_focal_wishlist_repository.dart';
 import 'package:ecommerce_app/src/features/wishlist/data/local/local_wishlist_repository.dart';
-import 'package:ecommerce_app/src/features/wishlist/data/remote/remote_wishlist_repository.dart';
 import 'package:ecommerce_app/src/features/wishlist/data/remote/fake_remote_wishlist_repository.dart';
+import 'package:ecommerce_app/src/features/wishlist/data/remote/remote_wishlist_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:go_router/go_router.dart';
 
 import 'features/authentication/auth_robot.dart';
 import 'features/cart/cart_robot.dart';
@@ -48,9 +47,6 @@ class Robot {
   final GoldenRobot golden;
 
   Future<void> pumpMyApp() async {
-    // ensure URL changes in the address bar when using push / pushNamed
-    // more info here: https://docs.google.com/document/d/1VCuB85D5kYxPR3qYOjVmw8boAGKb7k62heFyfFHTOvw/edit
-    GoRouter.optionURLReflectsImperativeAPIs = true;
     // Override repositories
     final productsRepository = FakeProductsRepository(addDelay: false);
     final authRepository = FakeAuthRepository(addDelay: false);
@@ -62,7 +58,6 @@ class Robot {
         FakeRemoteWishlistRepository(addDelay: false);
     final ordersRepository = FakeOrdersRepository(addDelay: false);
     final reviewsRepository = FakeReviewsRepository(addDelay: false);
-
     // * Create ProviderContainer with any required overrides
     final container = ProviderContainer(
       overrides: [
@@ -80,6 +75,7 @@ class Robot {
     );
     // * Initialize CartSyncService to start the listener
     container.read(cartSyncServiceProvider);
+    // * Initialize WishlistSyncService to start the listener
     container.read(wishlistSyncServiceProvider);
     // * Entry point of the app
     await tester.pumpWidget(

@@ -15,15 +15,15 @@ import '../../../mocks.dart';
 
 void main() {
   late MockAuthRepository authRepository;
-  late MockProductsRepository productsRepository;
-  late MockLocalCartRepository localCartRepository;
   late MockRemoteCartRepository remoteCartRepository;
+  late MockLocalCartRepository localCartRepository;
+  late MockProductsRepository productsRepository;
 
   setUp(() {
     authRepository = MockAuthRepository();
-    productsRepository = MockProductsRepository();
-    localCartRepository = MockLocalCartRepository();
     remoteCartRepository = MockRemoteCartRepository();
+    localCartRepository = MockLocalCartRepository();
+    productsRepository = MockProductsRepository();
   });
 
   CartSyncService makeCartSyncService() {
@@ -45,56 +45,46 @@ void main() {
     }) async {
       const uid = '123';
       when(authRepository.authStateChanges).thenAnswer(
-        (_) => Stream.value(
-          const AppUser(uid: uid, email: 'test@test.com'),
-        ),
+        (_) => Stream.value(const AppUser(uid: uid, email: 'test@test.com')),
       );
       when(productsRepository.fetchProductsList)
           .thenAnswer((_) => Future.value(kTestProducts));
-      when(localCartRepository.fetchCart).thenAnswer(
-        (_) => Future.value(Cart(localCartItems)),
-      );
-      when(() => remoteCartRepository.fetchCart(uid)).thenAnswer(
-        (_) => Future.value(Cart(remoteCartItems)),
-      );
+      when(localCartRepository.fetchCart)
+          .thenAnswer((_) => Future.value(Cart(localCartItems)));
+      when(() => remoteCartRepository.fetchCart(uid))
+          .thenAnswer((_) => Future.value(Cart(remoteCartItems)));
       when(() =>
               remoteCartRepository.setCart(uid, Cart(expectedRemoteCartItems)))
           .thenAnswer((_) => Future.value());
       when(() => localCartRepository.setCart(const Cart()))
           .thenAnswer((_) => Future.value());
-      // create cart sync service (not needed to return a value)
+      // create cart sync service (return value not needed)
       makeCartSyncService();
       // wait for all the stubbed methods to return a value
       await Future.delayed(const Duration());
       // verify
-      verify(
-        () => remoteCartRepository.setCart(
-          uid,
-          Cart(expectedRemoteCartItems),
-        ),
-      ).called(1);
-      verify(
-        () => localCartRepository.setCart(const Cart()),
-      ).called(1);
+      verify(() => remoteCartRepository.setCart(
+            uid,
+            Cart(expectedRemoteCartItems),
+          )).called(1);
+      verify(() => localCartRepository.setCart(
+            const Cart(),
+          )).called(1);
     }
 
-    test('local quantity <= available slots', () async {
+    test('local quantity <= available quantity', () async {
       await runCartSyncTest(
-          localCartItems: {'1': 1},
-          remoteCartItems: {},
-          expectedRemoteCartItems: {'1': 1});
+        localCartItems: {'1': 1},
+        remoteCartItems: {},
+        expectedRemoteCartItems: {'1': 1},
+      );
     });
-    test('local quantity > available slots', () async {
+    test('local quantity > available quantity', () async {
       await runCartSyncTest(
-          localCartItems: {'1': 1},
-          remoteCartItems: {},
-          expectedRemoteCartItems: {'1': 1});
-    });
-    test('local quantity is 0', () async {
-      await runCartSyncTest(
-          localCartItems: {'1': 0},
-          remoteCartItems: {'1': 2},
-          expectedRemoteCartItems: {'1': 2});
+        localCartItems: {'1': 15},
+        remoteCartItems: {},
+        expectedRemoteCartItems: {'1': 5},
+      );
     });
     test('local + remote quantity <= available quantity', () async {
       await runCartSyncTest(

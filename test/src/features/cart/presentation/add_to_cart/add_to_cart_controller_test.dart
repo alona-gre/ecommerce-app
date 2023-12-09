@@ -40,15 +40,12 @@ void main() {
     });
 
     test('item added with quantity = 2, failure', () async {
-      // setup 
       const quantity = 2;
       const item = Item(productId: productId, quantity: quantity);
       final cartService = MockCartService();
       when(() => cartService.addItem(item))
           .thenThrow((_) => Exception('Connection failed'));
       final controller = AddToCartController(cartService: cartService);
-     
-     // run & verify
       expect(
         controller.state,
         const AsyncData(1),

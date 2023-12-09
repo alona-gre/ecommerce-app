@@ -1,2 +1,2 @@
- # don't check in golden failure output
- **/failures/*.png
+# don't check in golden failure output
+**/failures/*.png

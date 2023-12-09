@@ -22,7 +22,6 @@ class FakeProductsRepository {
   }
 
   Future<List<Product>> fetchProductsList() async {
-    // await delay(addDelay);
     return Future.value(_products.value);
   }
 
@@ -49,14 +48,6 @@ class FakeProductsRepository {
     _products.value = products;
   }
 
-  static Product? _getProduct(List<Product> products, String id) {
-    try {
-      return products.firstWhere((product) => product.id == id);
-    } catch (e) {
-      return null;
-    }
-  }
-
   /// Search for products where the title contains the search query
   Future<List<Product>> searchProducts(String query) async {
     assert(
@@ -71,6 +62,14 @@ class FakeProductsRepository {
         .where((product) =>
             product.title.toLowerCase().contains(query.toLowerCase()))
         .toList();
+  }
+
+  static Product? _getProduct(List<Product> products, String id) {
+    try {
+      return products.firstWhere((product) => product.id == id);
+    } catch (e) {
+      return null;
+    }
   }
 }
 
@@ -100,8 +99,11 @@ final productProvider =
 final productsListSearchProvider = FutureProvider.autoDispose
     .family<List<Product>, String>((ref, query) async {
   final link = ref.keepAlive();
-  // * keep previous search results in memory for 5 seconds
-  Timer(const Duration(seconds: 5), () => link.close());
-  final productRepository = ref.watch(productsRepositoryProvider);
-  return productRepository.searchProducts(query);
+  // * keep previous search results in memory for 60 seconds
+  final timer = Timer(const Duration(seconds: 60), () {
+    link.close();
+  });
+  ref.onDispose(() => timer.cancel());
+  final productsRepository = ref.watch(productsRepositoryProvider);
+  return productsRepository.searchProducts(query);
 });

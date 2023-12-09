@@ -52,7 +52,6 @@ void main() {
         throwsAssertionError,
       );
     });
-
     test('non null user, sets review', () async {
       // setup
       when(() => authRepository.currentUser).thenReturn(testUser);

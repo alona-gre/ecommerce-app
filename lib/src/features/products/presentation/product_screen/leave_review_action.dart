@@ -36,24 +36,27 @@ class LeaveReviewAction extends ConsumerWidget {
             rowCrossAxisAlignment: CrossAxisAlignment.center,
             columnCrossAxisAlignment: CrossAxisAlignment.center,
             startContent: Text('Purchased on $dateFormatted'.hardcoded),
-            endContent: Consumer(builder: (context, ref, child) {
-              final reviewValue =
-                  ref.watch(userReviewStreamProvider(productId));
-              return CustomTextButton(
-                text: (reviewValue.value != null
-                        ? 'Update review'
-                        : 'Leave a review')
-                    .hardcoded,
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyLarge!
-                    .copyWith(color: Colors.green[700]),
-                onPressed: () => context.goNamed(
-                  AppRoute.leaveReview.name,
-                  pathParameters: {'id': productId},
-                ),
-              );
-            }),
+            endContent: Consumer(
+              builder: (context, ref, child) {
+                final reviewValue =
+                    ref.watch(userReviewStreamProvider(productId));
+
+                return CustomTextButton(
+                  text: (reviewValue.value != null
+                          ? 'Update review'
+                          : 'Leave a review')
+                      .hardcoded,
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyLarge!
+                      .copyWith(color: Colors.green[700]),
+                  onPressed: () => context.goNamed(
+                    AppRoute.leaveReview.name,
+                    pathParameters: {'id': productId},
+                  ),
+                );
+              },
+            ),
           ),
           gapH8,
         ],

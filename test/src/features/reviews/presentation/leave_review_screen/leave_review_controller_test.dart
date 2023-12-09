@@ -1,5 +1,5 @@
 import 'package:ecommerce_app/src/features/reviews/domain/review.dart';
-import 'package:ecommerce_app/src/features/reviews/presentation/leave_review_screen/leave_review_screen_controller.dart';
+import 'package:ecommerce_app/src/features/reviews/presentation/leave_review_screen/leave_review_controller.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -10,8 +10,11 @@ void main() {
   final testDate = DateTime(2022, 7, 31);
   const testRating = 5.0;
   const testComment = 'love it!';
-  final testReview =
-      Review(rating: testRating, comment: testComment, date: testDate);
+  final testReview = Review(
+    rating: testRating,
+    comment: testComment,
+    date: testDate,
+  );
   const testProductId = '1';
 
   late MockReviewsService reviewsService;
@@ -26,7 +29,7 @@ void main() {
             productId: testProductId,
             review: testReview,
           )).thenAnswer((_) => Future.value());
-      final controller = LeaveReviewScreenController(
+      final controller = LeaveReviewController(
         reviewsService: reviewsService,
         currentDateBuilder: () => testDate,
       );
@@ -59,7 +62,7 @@ void main() {
             productId: testProductId,
             review: testReview,
           )).thenThrow(Exception('Connection failed'));
-      final controller = LeaveReviewScreenController(
+      final controller = LeaveReviewController(
         reviewsService: reviewsService,
         currentDateBuilder: () => testDate,
       );
@@ -97,7 +100,7 @@ void main() {
             productId: testProductId,
             review: testReview,
           )).thenThrow(Exception('Connection failed'));
-      final controller = LeaveReviewScreenController(
+      final controller = LeaveReviewController(
         reviewsService: reviewsService,
         currentDateBuilder: () => testDate,
       );

@@ -42,7 +42,7 @@ class WishlistScreen extends ConsumerWidget {
               ctaBuilder: (_) => PrimaryButton(
                 text: 'Go to Cart'.hardcoded,
                 //isLoading: state.isLoading,
-                onPressed: () => context.pushNamed(AppRoute.cart.name),
+                onPressed: () => context.goNamed(AppRoute.cart.name),
               ),
             ),
           );

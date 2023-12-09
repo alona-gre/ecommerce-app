@@ -2,7 +2,7 @@ import 'package:ecommerce_app/src/common_widgets/async_value_widget.dart';
 import 'package:ecommerce_app/src/constants/breakpoints.dart';
 import 'package:ecommerce_app/src/features/products/domain/product.dart';
 import 'package:ecommerce_app/src/features/reviews/application/reviews_service.dart';
-import 'package:ecommerce_app/src/features/reviews/presentation/leave_review_screen/leave_review_screen_controller.dart';
+import 'package:ecommerce_app/src/features/reviews/presentation/leave_review_screen/leave_review_controller.dart';
 import 'package:ecommerce_app/src/features/reviews/presentation/product_reviews/product_rating_bar.dart';
 import 'package:ecommerce_app/src/localization/string_hardcoded.dart';
 import 'package:ecommerce_app/src/utils/async_value_ui.dart';
@@ -79,10 +79,10 @@ class _LeaveReviewFormState extends ConsumerState<LeaveReviewForm> {
   @override
   Widget build(BuildContext context) {
     ref.listen<AsyncValue>(
-      leaveReviewScreenControllerProvider,
+      leaveReviewControllerProvider,
       (_, state) => state.showAlertDialogOnError(context),
     );
-    final state = ref.watch(leaveReviewScreenControllerProvider);
+    final state = ref.watch(leaveReviewControllerProvider);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -116,16 +116,15 @@ class _LeaveReviewFormState extends ConsumerState<LeaveReviewForm> {
           isLoading: state.isLoading,
           onPressed: state.isLoading || _rating == 0
               ? null
-              : () => ref
-                  .read(leaveReviewScreenControllerProvider.notifier)
-                  .submitReview(
-                    previousReview: widget.review,
-                    productId: widget.productId,
-                    rating: _rating,
-                    comment: _controller.text,
-                    onSuccess: context.pop,
-                  ),
-        ),
+              : () =>
+                  ref.read(leaveReviewControllerProvider.notifier).submitReview(
+                        previousReview: widget.review,
+                        productId: widget.productId,
+                        rating: _rating,
+                        comment: _controller.text,
+                        onSuccess: context.pop,
+                      ),
+        )
       ],
     );
   }

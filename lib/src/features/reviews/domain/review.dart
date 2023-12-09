@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 /// Product review data
 class Review {
   const Review({
@@ -11,10 +10,11 @@ class Review {
   final DateTime date;
 
   @override
-  bool operator ==(covariant Review other) {
+  bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other.rating == rating &&
+    return other is Review &&
+        other.rating == rating &&
         other.comment == comment &&
         other.date == date;
   }

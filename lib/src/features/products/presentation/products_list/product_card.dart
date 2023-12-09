@@ -34,8 +34,6 @@ class ProductCard extends ConsumerWidget {
                 alignment: Alignment.topRight,
                 children: [
                   CustomImage(imageUrl: product.imageUrl),
-
-                  /// "TODO: now it doesn't handle correcly error dialog"
                   UpdateWishlistFromHomeScreenWidget(product: product),
                 ],
               ),

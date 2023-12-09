@@ -21,7 +21,7 @@ class WishlistIcon extends ConsumerWidget {
           child: IconButton(
             key: wishlistIconKey,
             icon: const Icon(Icons.favorite),
-            onPressed: () => context.pushNamed(AppRoute.wishlist.name),
+            onPressed: () => context.goNamed(AppRoute.wishlist.name),
           ),
         ),
         if (wishlistItemsCount > 0)
