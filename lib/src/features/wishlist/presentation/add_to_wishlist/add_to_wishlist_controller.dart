@@ -5,9 +5,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 class AddToWishlistController extends StateNotifier<AsyncValue<bool>> {
   final WishlistService wishlistService;
 
-  AddToWishlistController({
-    required this.wishlistService,
-  }) : super(const AsyncData(false));
+  AddToWishlistController({required this.wishlistService})
+      : super(const AsyncData(false));
 
   Future<void> addProductToWishlist(WishlistItem wishlistItem) async {
     state = const AsyncLoading<bool>().copyWithPrevious(state);
