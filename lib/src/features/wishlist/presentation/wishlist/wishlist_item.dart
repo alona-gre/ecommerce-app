@@ -1,7 +1,7 @@
 import 'package:ecommerce_app/src/common_widgets/error_message_widget.dart';
 import 'package:ecommerce_app/src/common_widgets/shimmer_loading_cart_items_list.dart';
 import 'package:ecommerce_app/src/features/products/data/fake_products_repository.dart';
-import 'package:ecommerce_app/src/features/wishlist/domain/wishlistItem.dart';
+import 'package:ecommerce_app/src/features/wishlist/domain/wishlist_item.dart';
 import 'package:ecommerce_app/src/features/wishlist/presentation/wishlist/remove_from_wishlist_screen_widget.dart';
 import 'package:ecommerce_app/src/routing/app_router.dart';
 import 'package:ecommerce_app/src/utils/currency_formatter.dart';

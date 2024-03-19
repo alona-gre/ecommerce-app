@@ -4,8 +4,11 @@ import 'package:ecommerce_app/src/features/wishlist/data/local/local_wishlist_re
 import 'package:ecommerce_app/src/features/wishlist/data/remote/remote_wishlist_repository.dart';
 import 'package:ecommerce_app/src/features/wishlist/domain/mutable_wishlist.dart';
 import 'package:ecommerce_app/src/features/wishlist/domain/wishlist.dart';
-import 'package:ecommerce_app/src/features/wishlist/domain/wishlistItem.dart';
+import 'package:ecommerce_app/src/features/wishlist/domain/wishlist_item.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+
+part 'wishlist_service.g.dart';
 
 class WishlistService {
   final Ref ref;
@@ -61,32 +64,32 @@ class WishlistService {
   }
 }
 
-final wishlistServiceProvider = Provider<WishlistService>(
-  (ref) {
-    return WishlistService(ref);
-  },
-);
+@Riverpod(keepAlive: true)
+WishlistService wishlistService(WishlistServiceRef ref) {
+  return WishlistService(ref);
+}
 
-final wishlistProvider = StreamProvider<Wishlist>(
-  (ref) {
-    final user = ref.watch(authStateChangesProvider).value;
-    if (user != null) {
-      return ref.read(remoteWishlistRepositoryProvider).watchWishlist(user.uid);
-    } else {
-      return ref.read(localWishlistRepositoryProvider).watchWishlist();
-    }
-  },
-);
+@Riverpod(keepAlive: true)
+Stream<Wishlist> wishlist(WishlistRef ref) {
+  final user = ref.watch(authStateChangesProvider).value;
+  if (user != null) {
+    return ref.read(remoteWishlistRepositoryProvider).watchWishlist(user.uid);
+  } else {
+    return ref.read(localWishlistRepositoryProvider).watchWishlist();
+  }
+}
 
-final wishlistItemsCountProvider = Provider<int>((ref) {
+@Riverpod(keepAlive: true)
+int wishlistItemsCount(WishlistItemsCountRef ref) {
   return ref.watch(wishlistProvider).maybeMap(
         data: (cart) => cart.value.items.length,
         orElse: () => 0,
       );
-});
+}
 
-final isFavoriteProvider = Provider.family<bool, ProductID>((ref, productId) {
+@riverpod
+bool isFavorite(IsFavoriteRef ref, ProductID productId) {
   final wishlist = ref.watch(wishlistProvider).value ?? const Wishlist();
 
   return wishlist.items[productId] ?? false;
-});
+}

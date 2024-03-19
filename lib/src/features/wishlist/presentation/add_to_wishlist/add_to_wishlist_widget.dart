@@ -1,7 +1,7 @@
 import 'package:ecommerce_app/src/common_widgets/favorite_button.dart';
 import 'package:ecommerce_app/src/features/products/domain/product.dart';
 import 'package:ecommerce_app/src/features/wishlist/application/wishlist_service.dart';
-import 'package:ecommerce_app/src/features/wishlist/domain/wishlistItem.dart';
+import 'package:ecommerce_app/src/features/wishlist/domain/wishlist_item.dart';
 import 'package:ecommerce_app/src/features/wishlist/presentation/add_to_wishlist/add_to_wishlist_controller.dart';
 import 'package:ecommerce_app/src/utils/show_snackbar.dart';
 import 'package:flutter/material.dart';

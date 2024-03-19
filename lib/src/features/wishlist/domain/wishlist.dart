@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 
 import 'package:ecommerce_app/src/features/products/domain/product.dart';
-import 'package:ecommerce_app/src/features/wishlist/domain/wishlistItem.dart';
+import 'package:ecommerce_app/src/features/wishlist/domain/wishlist_item.dart';
 
 /// Model class representing the wishlist contents.
 class Wishlist {

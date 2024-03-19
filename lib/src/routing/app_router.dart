@@ -14,6 +14,9 @@ import 'package:ecommerce_app/src/routing/not_found_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+
+part 'app_router.g.dart';
 
 enum AppRoute {
   home,
@@ -27,7 +30,8 @@ enum AppRoute {
   signIn,
 }
 
-final goRouterProvider = Provider<GoRouter>((ref) {
+@Riverpod(keepAlive: true)
+GoRouter goRouter(GoRouterRef ref) {
   final authRepository = ref.watch(authRepositoryProvider);
   return GoRouter(
     initialLocation: '/',
@@ -131,4 +135,4 @@ final goRouterProvider = Provider<GoRouter>((ref) {
     ],
     errorBuilder: (context, state) => const NotFoundScreen(),
   );
-});
+}

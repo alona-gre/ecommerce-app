@@ -1,15 +1,20 @@
+import 'dart:async';
+
 import 'package:ecommerce_app/src/features/products/domain/product.dart';
 import 'package:ecommerce_app/src/features/wishlist/application/wishlist_service.dart';
-import 'package:ecommerce_app/src/features/wishlist/domain/wishlistItem.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ecommerce_app/src/features/wishlist/domain/wishlist_item.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+part 'update_wishlist_from_home_screen_controller.g.dart';
 
+@riverpod
 class UpdateWishlistFromHomeScreenController
-    extends StateNotifier<AsyncValue<void>> {
-  final WishlistService wishlistService;
+    extends _$UpdateWishlistFromHomeScreenController {
+  @override
+  FutureOr<void> build() {
+    // nothing to do
+  }
 
-  UpdateWishlistFromHomeScreenController({
-    required this.wishlistService,
-  }) : super(const AsyncData(null));
+  WishlistService get wishlistService => ref.read(wishlistServiceProvider);
 
   Future<void> addProductToWishlistFromHomeScreen(
       WishlistItem wishlistItem) async {
@@ -39,10 +44,3 @@ class UpdateWishlistFromHomeScreenController
     }
   }
 }
-
-final updateWishlistFromHomeScreenControllerProvider =
-    StateNotifierProvider.autoDispose<UpdateWishlistFromHomeScreenController,
-        AsyncValue<void>>((ref) {
-  return UpdateWishlistFromHomeScreenController(
-      wishlistService: ref.watch(wishlistServiceProvider));
-});

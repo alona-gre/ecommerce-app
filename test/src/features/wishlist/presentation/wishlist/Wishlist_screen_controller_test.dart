@@ -1,4 +1,5 @@
-import 'package:ecommerce_app/src/features/wishlist/presentation/wishlist/Wishlist_screen_controller.dart';
+import 'package:ecommerce_app/src/features/wishlist/application/wishlist_service.dart';
+import 'package:ecommerce_app/src/features/wishlist/presentation/update_wishlist_from_home_screen/update_wishlist_from_home_screen_controller.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -6,8 +7,22 @@ import 'package:mocktail/mocktail.dart';
 import '../../../../mocks.dart';
 
 void main() {
+  const productId = '1';
+
+  ProviderContainer makeProviderContainer(MockWishlistService wishlistService) {
+    final container = ProviderContainer(
+      overrides: [
+        wishlistServiceProvider.overrideWithValue(wishlistService),
+      ],
+    );
+    addTearDown(container.dispose);
+    return container;
+  }
+
+  setUpAll(() {
+    registerFallbackValue(const AsyncLoading<void>());
+  });
   group('remove Product from Wishlist on Wishlist Screen', () {
-    const productId = '1';
     test('remove Product from Wishlist on Wishlist Screen, success ', () async {
       // setup
 
@@ -16,49 +31,71 @@ void main() {
         () => wishlistService.removeWishlistProductById(productId),
       ).thenAnswer((_) => Future.value());
 
-      // run & verify
-      final controller = WishlistScreenController(
-        wishlistService: wishlistService,
+      final container = makeProviderContainer(wishlistService);
+      final controller = container
+          .read(updateWishlistFromHomeScreenControllerProvider.notifier);
+      final listener = Listener<AsyncValue<void>>();
+      container.listen(
+        updateWishlistFromHomeScreenControllerProvider,
+        listener.call,
+        fireImmediately: true,
       );
-      expect(
-        controller.state,
-        const AsyncData<void>(null),
+      // run
+      const initialData = AsyncData<void>(null);
+      // the build method returns a value immediately, so we expect AsyncData
+      verify(() => listener(null, initialData));
+      // add item to wishlist
+      await controller.removeProductFromWishlistFromHomeScreen(productId);
+      verifyInOrder(
+        [
+          // the loading state is set
+          () => listener(initialData, any(that: isA<AsyncLoading>())),
+          // the loading is off
+          () => listener(any(that: isA<AsyncLoading>()), initialData),
+        ],
       );
-      await controller.removeFromWishlistScreenById(productId);
 
+      verifyNoMoreInteractions(listener);
       verify(() => wishlistService.removeWishlistProductById(productId))
           .called(1);
     });
+  });
 
-    test('remove Product from Wishlist on Wishlist Screen, failure ', () async {
-      // setup
-      final wishlistService = MockWishlistService();
-      when(
-        () => wishlistService.removeWishlistProductById(productId),
-      ).thenThrow((_) => Exception('Connection failed'));
+  test('remove Product from Wishlist on Wishlist Screen, failure ', () async {
+    // setup
 
-      // run & verify
-      final controller = WishlistScreenController(
-        wishlistService: wishlistService,
-      );
+    final wishlistService = MockWishlistService();
+    when(
+      () => wishlistService.removeWishlistProductById(productId),
+    ).thenThrow((_) => Exception('Connection failed'));
 
-      expect(
-        controller.state,
-        const AsyncData<void>(null),
-      );
-      await controller.removeFromWishlistScreenById(productId);
+    final container = makeProviderContainer(wishlistService);
+    final controller =
+        container.read(updateWishlistFromHomeScreenControllerProvider.notifier);
+    final listener = Listener<AsyncValue<void>>();
+    container.listen(
+      updateWishlistFromHomeScreenControllerProvider,
+      listener.call,
+      fireImmediately: true,
+    );
+    // run
+    const initialData = AsyncData<void>(null);
+    // the build method returns a value immediately, so we expect AsyncData
+    verify(() => listener(null, initialData));
+    // add item to wishlist
+    await controller.removeProductFromWishlistFromHomeScreen(productId);
+    verifyInOrder(
+      [
+        // the loading state is set
+        () => listener(initialData, any(that: isA<AsyncLoading>())),
+        // the loading is off, error
+        () => listener(
+            any(that: isA<AsyncLoading>()), any(that: isA<AsyncError>())),
+      ],
+    );
 
-      verify(() => wishlistService.removeWishlistProductById(productId))
-          .called(1);
-      expect(
-        controller.state,
-        predicate<AsyncValue<void>>(
-          (value) {
-            expect(value.hasError, true);
-            return true;
-          },
-        ),
-      );
-    });
+    verifyNoMoreInteractions(listener);
+    verify(() => wishlistService.removeWishlistProductById(productId))
+        .called(1);
   });
 }

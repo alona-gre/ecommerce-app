@@ -1,6 +1,6 @@
 import 'package:ecommerce_app/src/features/wishlist/domain/mutable_wishlist.dart';
 import 'package:ecommerce_app/src/features/wishlist/domain/wishlist.dart';
-import 'package:ecommerce_app/src/features/wishlist/domain/wishlistItem.dart';
+import 'package:ecommerce_app/src/features/wishlist/domain/wishlist_item.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

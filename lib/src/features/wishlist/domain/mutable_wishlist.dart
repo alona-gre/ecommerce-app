@@ -1,6 +1,6 @@
 import 'package:ecommerce_app/src/features/products/domain/product.dart';
 import 'package:ecommerce_app/src/features/wishlist/domain/wishlist.dart';
-import 'package:ecommerce_app/src/features/wishlist/domain/wishlistItem.dart';
+import 'package:ecommerce_app/src/features/wishlist/domain/wishlist_item.dart';
 
 /// Helper extension used to mutate the items in the wishlist.
 extension MutableWishlist on Wishlist {

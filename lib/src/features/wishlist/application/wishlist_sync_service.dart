@@ -6,6 +6,9 @@ import 'package:ecommerce_app/src/features/wishlist/data/remote/remote_wishlist_
 import 'package:ecommerce_app/src/features/wishlist/domain/mutable_wishlist.dart';
 import 'package:ecommerce_app/src/features/wishlist/domain/wishlist.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+
+part 'wishlist_sync_service.g.dart';
 
 class WishlistSyncService {
   final Ref ref;
@@ -52,8 +55,7 @@ class WishlistSyncService {
   }
 }
 
-final wishlistSyncServiceProvider = Provider<WishlistSyncService>(
-  (ref) {
-    return WishlistSyncService(ref);
-  },
-);
+@Riverpod(keepAlive: true)
+WishlistSyncService wishlistSyncService(WishlistSyncServiceRef ref) {
+  return WishlistSyncService(ref);
+}

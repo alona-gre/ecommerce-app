@@ -1,12 +1,19 @@
+import 'dart:async';
+
 import 'package:ecommerce_app/src/features/wishlist/application/wishlist_service.dart';
-import 'package:ecommerce_app/src/features/wishlist/domain/wishlistItem.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ecommerce_app/src/features/wishlist/domain/wishlist_item.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-class AddToWishlistController extends StateNotifier<AsyncValue<bool>> {
-  final WishlistService wishlistService;
+part 'add_to_wishlist_controller.g.dart';
 
-  AddToWishlistController({required this.wishlistService})
-      : super(const AsyncData(false));
+@riverpod
+class AddToWishlistController extends _$AddToWishlistController {
+  @override
+  FutureOr<bool> build() {
+    return false;
+  }
+
+  WishlistService get wishlistService => ref.read(wishlistServiceProvider);
 
   Future<void> addProductToWishlist(WishlistItem wishlistItem) async {
     state = const AsyncLoading<bool>().copyWithPrevious(state);
@@ -32,9 +39,3 @@ class AddToWishlistController extends StateNotifier<AsyncValue<bool>> {
     }
   }
 }
-
-final addToWishlistControllerProvider =
-    StateNotifierProvider<AddToWishlistController, AsyncValue<bool>>((ref) {
-  return AddToWishlistController(
-      wishlistService: ref.watch(wishlistServiceProvider));
-});

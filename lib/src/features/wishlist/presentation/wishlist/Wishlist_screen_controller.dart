@@ -1,14 +1,20 @@
+import 'dart:async';
+
 import 'package:ecommerce_app/src/features/products/domain/product.dart';
 import 'package:ecommerce_app/src/features/wishlist/application/wishlist_service.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-class WishlistScreenController extends StateNotifier<AsyncValue<void>> {
-  final WishlistService wishlistService;
+part 'wishlist_screen_controller.g.dart';
 
-  WishlistScreenController({required this.wishlistService})
-      : super(const AsyncData(null));
+@riverpod
+class WishlistScreenController extends _$WishlistScreenController {
+  @override
+  FutureOr<void> build() {
+    // nothing to do
+  }
 
   Future<void> removeFromWishlistScreenById(ProductID productId) async {
+    final wishlistService = ref.read(wishlistServiceProvider);
     state = const AsyncLoading<bool>();
     final value = await AsyncValue.guard(
         () => wishlistService.removeWishlistProductById(productId));
@@ -19,9 +25,3 @@ class WishlistScreenController extends StateNotifier<AsyncValue<void>> {
     }
   }
 }
-
-final wishlistScreenControllerProvider = StateNotifierProvider.autoDispose<
-    WishlistScreenController, AsyncValue<void>>((ref) {
-  return WishlistScreenController(
-      wishlistService: ref.watch(wishlistServiceProvider));
-});
